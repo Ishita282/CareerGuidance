@@ -1,0 +1,36 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>College Selection</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Selected College</h1>
+    </header>
+
+    <main>
+        <div id="collegeInfo"></div>
+        <button class="btn" onclick="proceedRegistration()">Proceed to Registration</button>
+    </main>
+
+    <script>
+        const collegeId = localStorage.getItem('collegeId');
+        const infoDiv = document.getElementById('collegeInfo');
+
+        db.collection("colleges").doc(collegeId).get()
+            .then(doc => {
+                const data = doc.data();
+                infoDiv.innerHTML = `<p><strong>${data.name}</strong></p>
+                                     <p>Courses: ${data.courses}</p>
+                                     <p>Fee: ${data.tuition}</p>`;
+            });
+
+        function proceedRegistration() {
+            console.log("Proceeding to college registration");
+            window.location.href = "college-registration.html";
+        }
+    </script>
+</body>
+</html>

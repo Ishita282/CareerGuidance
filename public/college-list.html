@@ -1,0 +1,41 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>College List</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>College List</h1>
+    </header>
+
+    <main>
+        <ul id="collegeList"></ul>
+    </main>
+
+    <script>
+        const listContainer = document.getElementById('collegeList');
+        const location = localStorage.getItem('location');
+
+        db.collection("colleges").where("location", "==", location)
+            .get()
+            .then(snapshot => {
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const li = document.createElement('li');
+                    li.innerHTML = `<strong>${data.name}</strong> - Courses: ${data.courses} - Fee: ${data.tuition} 
+                    <button onclick="selectCollege('${doc.id}')">Select</button>`;
+                    listContainer.appendChild(li);
+                });
+            })
+            .catch(err => console.error(err));
+
+        function selectCollege(collegeId) {
+            console.log("College selected:", collegeId);
+            localStorage.setItem('collegeId', collegeId);
+            window.location.href = "college-registration.html";
+        }
+    </script>
+</body>
+</html>

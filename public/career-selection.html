@@ -1,0 +1,27 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Career Selection</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Select Your Career</h1>
+    </header>
+
+    <main>
+        <p>Choose your field of interest:</p>
+        <button class="btn" onclick="selectCareer('Engineering')">Engineering</button>
+        <button class="btn" onclick="selectCareer('Management')">Management</button>
+    </main>
+
+    <script>
+        function selectCareer(career) {
+            console.log("Career selected:", career);
+            localStorage.setItem('career', career);
+            window.location.href = "location.html";
+        }
+    </script>
+</body>
+</html>

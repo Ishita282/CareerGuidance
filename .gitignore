@@ -1,0 +1,25 @@
+# Node modules (if you use npm for live-server)
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Firebase local files
+.firebase/
+.firebaserc
+
+# Environment/config files (optional)
+.env
+.env.local
+
+# IDE/editor files
+.vscode/
+.idea/
+
+# Build/dist folders (if you ever build)
+dist/
+build/

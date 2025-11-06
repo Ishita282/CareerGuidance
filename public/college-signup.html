@@ -1,0 +1,45 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>College Sign Up</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>College Sign Up</h1>
+    </header>
+
+    <main>
+        <form id="collegeForm">
+            <input type="text" id="collegeName" placeholder="College Name" required><br><br>
+            <input type="text" id="location" placeholder="Location" required><br><br>
+            <input type="text" id="courses" placeholder="Courses Offered" required><br><br>
+            <input type="number" id="tuition" placeholder="Tuition Fee" required><br><br>
+            <button type="submit" class="btn">Sign Up College</button>
+        </form>
+    </main>
+
+    <script>
+        const collegeForm = document.getElementById('collegeForm');
+        collegeForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('collegeName').value;
+            const loc = document.getElementById('location').value;
+            const courses = document.getElementById('courses').value;
+            const tuition = document.getElementById('tuition').value;
+
+            db.collection("colleges").add({
+                name: name,
+                location: loc,
+                courses: courses,
+                tuition: tuition
+            }).then(() => {
+                alert("College Registered Successfully");
+                console.log("College added:", name);
+                collegeForm.reset();
+            }).catch(err => console.error(err));
+        });
+    </script>
+</body>
+</html>

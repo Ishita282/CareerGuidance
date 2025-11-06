@@ -1,0 +1,116 @@
+/* Base Styles */
+body {
+    font-family: 'Cursive', Arial, sans-serif;
+    background: linear-gradient(to bottom right, #ffe6f2, #fff0f5);
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    color: #4b1c61;
+}
+
+/* Header */
+header {
+    background: #ffb6c1;
+    background: linear-gradient(to right, #ffb6c1, #ffd6e0);
+    color: #fff;
+    padding: 20px 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+h1 {
+    margin: 0;
+    font-family: 'Cursive', sans-serif;
+    text-shadow: 1px 1px 4px #ffe6f2;
+}
+
+/* Main Content */
+main {
+    margin: 50px auto;
+    padding: 20px;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    margin: 10px;
+    padding: 12px 25px;
+    text-decoration: none;
+    color: white;
+    background: linear-gradient(to right, #ff99cc, #ff66b3);
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(255,105,180,0.3);
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255,105,180,0.5);
+}
+
+/* Inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"] {
+    padding: 10px;
+    width: 250px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    border: 2px solid #ff99cc;
+    outline: none;
+    transition: all 0.3s ease;
+    font-family: 'Cursive', sans-serif;
+}
+
+input:focus {
+    border-color: #ff66b3;
+    box-shadow: 0 0 10px #ffb6c1;
+}
+
+/* Lists */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background: #ffe6f2;
+    margin: 10px;
+    padding: 15px;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(255,182,193,0.3);
+    font-size: 16px;
+}
+
+/* Footer */
+footer {
+    background: #ffb6c1;
+    color: white;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    box-shadow: 0 -3px 10px rgba(0,0,0,0.1);
+}
+
+/* Aptitude Test Buttons */
+#testContainer button {
+    margin: 10px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    background: linear-gradient(to right, #ffccff, #ff99cc);
+    border: none;
+    cursor: pointer;
+    color: #4b1c61;
+    font-size: 16px;
+    box-shadow: 0 5px 15px rgba(255,105,180,0.2);
+    transition: all 0.3s ease;
+}
+
+#testContainer button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255,105,180,0.4);
+}

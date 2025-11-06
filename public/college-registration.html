@@ -1,0 +1,44 @@
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>College Registration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>College Registration</h1>
+    </header>
+
+    <main>
+        <form id="registrationForm">
+            <input type="text" id="studentName" placeholder="Full Name" required><br><br>
+            <input type="email" id="studentEmail" placeholder="Email" required><br><br>
+            <input type="number" id="cgpa" placeholder="CGPA / Percentage" required><br><br>
+            <button type="submit" class="btn">Register</button>
+        </form>
+    </main>
+
+    <script>
+        const form = document.getElementById('registrationForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const collegeId = localStorage.getItem('collegeId');
+            const name = document.getElementById('studentName').value;
+            const email = document.getElementById('studentEmail').value;
+            const cgpa = document.getElementById('cgpa').value;
+
+            db.collection("registrations").add({
+                collegeId: collegeId,
+                name: name,
+                email: email,
+                cgpa: cgpa
+            }).then(() => {
+                console.log("Registration complete for:", name);
+                alert("Registration Successful");
+                window.location.href = "aptitude-test.html";
+            }).catch(err => console.error(err));
+        });
+    </script>
+</body>
+</html>

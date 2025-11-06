@@ -1,0 +1,33 @@
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Details</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Your Details</h1>
+    </header>
+
+    <main>
+        <div id="studentInfo"></div>
+    </main>
+
+    <script>
+        const studentEmail = firebase.auth().currentUser?.email;
+        const infoDiv = document.getElementById('studentInfo');
+
+        db.collection("registrations").where("email", "==", studentEmail)
+            .get()
+            .then(snapshot => {
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    infoDiv.innerHTML = `<p>Name: ${data.name}</p>
+                                         <p>Email: ${data.email}</p>
+                                         <p>CGPA: ${data.cgpa}</p>`;
+                });
+            });
+    </script>
+</body>
+</html>
