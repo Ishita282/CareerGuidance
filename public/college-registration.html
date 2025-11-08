@@ -17,11 +17,11 @@
   </main>
 
   <script type="module">
-    import { getCollegeById } from './assets/js/college.js';
-    import { db } from './assets/js/firebase-config.js';
+    import { getCollegeById } from 'assets/js/college.js';
+    import { db } from 'assets/js/firebase-config.js';
     import { addDoc, collection, serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
-    import { logAction } from './assets/js/logger.js';
-    import { auth } from './assets/js/firebase-config.js';
+    import { logAction } from 'assets/js/logger.js';
+    import { auth } from 'assets/js/firebase-config.js';
     import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
 
     const params = new URLSearchParams(location.search);
