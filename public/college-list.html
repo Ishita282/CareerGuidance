@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <title>College List</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="./assets/css/styles.css">
 </head>
 <body>
   <main class="container">
@@ -27,8 +27,8 @@
   </main>
 
   <script type="module">
-    import { getCollegesForUser } from 'assets/js/college.js';
-    import { logAction } from 'assets/js/logger.js';
+    import { getCollegesForUser } from './assets/js/college.js';
+    import { logAction } from './assets/js/logger.js';
 
     const params = new URLSearchParams(location.search);
     const locationParam = params.get('location') || '';

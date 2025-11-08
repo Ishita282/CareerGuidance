@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <title>Aptitude Test</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="./assets/css/styles.css">
 </head>
 <body>
   <main class="container">
@@ -18,7 +18,7 @@
   </main>
 
   <script type="module">
-    import { startTest } from 'assets/js/aptitude.js';
+    import { startTest } from './assets/js/aptitude.js';
     const container = document.getElementById('test-container');
     const submitBtn = document.getElementById('submit-btn');
     startTest(container, submitBtn);

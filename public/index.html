@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <title>Career Guidance — Login</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="./assets/css/styles.css">
 </head>
 <body>
   <main class="container">
@@ -26,8 +26,8 @@
   </main>
 
   <script type="module">
-    import { studentLogin } from 'assets/js/auth.js';
-    import { logAction } from 'assets/js/logger.js';
+    import { studentLogin } from './assets/js/auth.js';
+    import { logAction } from './assets/js/logger.js';
 
     const form = document.getElementById('login-form');
     form.addEventListener('submit', async (e) => {
