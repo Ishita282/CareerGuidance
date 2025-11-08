@@ -1,27 +1,33 @@
- <!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Career Selection</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <title>Choose Career — Career Guidance</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    <header>
-        <h1>Select Your Career</h1>
-    </header>
+  <main class="container">
+    <h1>Choose Your Career Stream</h1>
+    <section class="card">
+      <div class="grid">
+        <button class="card-btn" data-career="Engineering">Engineering</button>
+        <button class="card-btn" data-career="Management">Management</button>
+        <button class="card-btn" data-career="Science">Science</button>
+        <button class="card-btn" data-career="Other">Other</button>
+      </div>
+      <p class="muted"><a href="location-selection.html">Skip — choose location</a></p>
+    </section>
+  </main>
 
-    <main>
-        <p>Choose your field of interest:</p>
-        <button class="btn" onclick="selectCareer('Engineering')">Engineering</button>
-        <button class="btn" onclick="selectCareer('Management')">Management</button>
-    </main>
-
-    <script>
-        function selectCareer(career) {
-            console.log("Career selected:", career);
-            localStorage.setItem('career', career);
-            window.location.href = "location.html";
-        }
-    </script>
+  <script>
+    document.querySelectorAll('.card-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const career = btn.dataset.career;
+        // Pass selection forward via query param
+        location.href = `location-selection.html?career=${encodeURIComponent(career)}`;
+      });
+    });
+  </script>
 </body>
 </html>

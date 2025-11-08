@@ -1,41 +1,83 @@
- <!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>College List</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <title>College List</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    <header>
-        <h1>College List</h1>
-    </header>
+  <main class="container">
+    <h1>Recommended Colleges</h1>
+    <section class="card">
+      <div class="filters">
+        <label>Max Tuition
+          <input id="filter-fee" type="number" placeholder="e.g. 200000"/>
+        </label>
+        <label>Min CGPA
+          <input id="filter-cgpa" type="number" step="0.01" placeholder="e.g. 7.0"/>
+        </label>
+        <div><button id="apply-filters" class="btn small">Apply Filters</button></div>
+        <br>
+        <div><a href="aptitude-test.html" class="btn small">Take Aptitude Test</a></div>
+      </div>
 
-    <main>
-        <ul id="collegeList"></ul>
-    </main>
+      <div id="results" class="results"></div>
+    </section>
+  </main>
 
-    <script>
-        const listContainer = document.getElementById('collegeList');
-        const location = localStorage.getItem('location');
+  <script type="module">
+    import { getCollegesForUser } from './assets/js/college.js';
+    import { logAction } from './assets/js/logger.js';
 
-        db.collection("colleges").where("location", "==", location)
-            .get()
-            .then(snapshot => {
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const li = document.createElement('li');
-                    li.innerHTML = `<strong>${data.name}</strong> - Courses: ${data.courses} - Fee: ${data.tuition} 
-                    <button onclick="selectCollege('${doc.id}')">Select</button>`;
-                    listContainer.appendChild(li);
-                });
-            })
-            .catch(err => console.error(err));
+    const params = new URLSearchParams(location.search);
+    const locationParam = params.get('location') || '';
+    const careerParam = params.get('career') || '';
 
-        function selectCollege(collegeId) {
-            console.log("College selected:", collegeId);
-            localStorage.setItem('collegeId', collegeId);
-            window.location.href = "college-registration.html";
+    const resultsEl = document.getElementById('results');
+    const feeEl = document.getElementById('filter-fee');
+    const cgpaEl = document.getElementById('filter-cgpa');
+    const applyBtn = document.getElementById('apply-filters');
+
+    async function renderList(filters = {}) {
+      resultsEl.innerHTML = '<p class="muted" style="clear:both;margin-top:0.5rem">Loading...</p>';
+      try {
+        const colleges = await getCollegesForUser({ location: locationParam, career: careerParam, ...filters });
+        if (!colleges.length) {
+          resultsEl.innerHTML = '<p class="muted" style="clear:both;margin-top:0.5rem">No colleges found with these filters.</p>';
+          return;
         }
-    </script>
+        resultsEl.innerHTML = '';
+        colleges.forEach(c => {
+          const card = document.createElement('div');
+          card.className = 'college-card';
+          card.innerHTML = `
+            <h3>${c.name}</h3>
+            <p class="muted">${c.location}</p>
+            <p>Tuition: ₹${c.fees?.tuition ?? 'N/A'}</p>
+            <p>Min CGPA: ${c.eligibility?.min_cgpa ?? 'N/A'}</p>
+            <div class="card-actions">
+              <a class="btn small" href="college-detail.html?id=${c.id}">View</a>
+              <a class="btn small secondary" href="college-registration.html?id=${c.id}">Register</a>
+            </div>
+          `;
+          resultsEl.appendChild(card);
+        });
+        await logAction({ action: 'view_college_list', meta: { location: locationParam, career: careerParam, filters }});
+      } catch (err) {
+        resultsEl.innerHTML = '<p class="muted" style="clear:both;margin-top:0.5rem">Failed to load colleges.</p>';
+        console.error(err);
+      }
+    }
+
+    applyBtn.addEventListener('click', () => {
+      const fee = feeEl.value ? Number(feeEl.value) : null;
+      const cgpa = cgpaEl.value ? Number(cgpaEl.value) : null;
+      renderList({ maxTuition: fee, minCgpa: cgpa });
+    });
+
+    // initial render
+    renderList();
+  </script>
 </body>
 </html>

@@ -1,31 +1,27 @@
- <!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Aptitude Test</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <title>Aptitude Test</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    <header>
-        <h1>Aptitude Test</h1>
-    </header>
+  <main class="container">
+    <h1>Aptitude Test</h1>
+    <section class="card">
+      <div id="test-container"></div>
+      <div style="margin-top:1rem;">
+        <button id="submit-btn" class="btn">Submit Test</button>
+      </div>
+    </section>
+  </main>
 
-    <main>
-        <div id="testContainer">
-            <p>1. What is 2 + 2?</p>
-            <button onclick="submitAnswer(4)">4</button>
-            <button onclick="submitAnswer(3)">3</button>
-            <button onclick="submitAnswer(5)">5</button>
-        </div>
-    </main>
-
-    <script>
-        function submitAnswer(answer) {
-            let score = answer === 4 ? 1 : 0;
-            console.log("Aptitude test completed, score:", score);
-            localStorage.setItem('testScore', score);
-            window.location.href = "test-complete.html";
-        }
-    </script>
+  <script type="module">
+    import { startTest } from './assets/js/aptitude.js';
+    const container = document.getElementById('test-container');
+    const submitBtn = document.getElementById('submit-btn');
+    startTest(container, submitBtn);
+  </script>
 </body>
 </html>

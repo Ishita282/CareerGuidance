@@ -1,15 +1,23 @@
 {
   "name": "careerguidance",
   "version": "1.0.0",
-  "description": "Career Guidance",
-  "main": "firebase.js",
+  "description": "Simple Career Guidance web app for students to find and register colleges, take an aptitude test, and manage profiles. Admin manages colleges & tests.",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ishita282/CareerGuidance.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ishita282/CareerGuidance/issues"
+  },
+  "homepage": "https://github.com/Ishita282/CareerGuidance#readme",
   "dependencies": {
-    "firebase": "^12.5.0"
+    "live-server": "^1.2.2"
   }
 }

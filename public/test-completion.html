@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Test Complete</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Test Completed</h1>
+    <section class="card">
+      <p id="score-display" class="muted">Loading...</p>
+      <div class="card-actions">
+        <a class="btn" href="college-list.html">View Colleges</a>
+        <a class="btn secondary" href="career-selection.html">Back to Home</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const score = params.get('score') ?? 'N/A';
+    document.getElementById('score-display').textContent = `Your score: ${score}`;
+  </script>
+</body>
+</html>

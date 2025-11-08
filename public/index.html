@@ -1,26 +1,49 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Career Guidance</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <header>
-      <h1>Career Guidance</h1>
-    </header>
+<head>
+  <meta charset="utf-8" />
+  <title>Career Guidance — Login</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Career Guidance</h1>
+    <section class="card">
+      <h2>Student Login</h2>
+      <form id="login-form" class="form">
+        <label>Email
+          <input id="login-email" type="email" required />
+        </label>
+        <label>Password
+          <input id="login-password" type="password" required minlength="6" />
+        </label>
+        <button type="submit" class="btn">Login</button>
+      </form>
+      <p class="muted">New user? <a href="signup.html">Sign up</a></p>
+      <p class="muted">Are you an admin? <a href="college-signup.html">Admin page</a></p>
+    </section>
+  </main>
 
-    <main>
-      <p>Welcome to Career Guidance! Find the best colleges for your career.</p>
-      <div><a href="student-login.html" class="btn">Student Login</a></div>
-      <div>
-        <a href="signup.html" class="btn">Student Sign Up</a>
-      </div>
-      <div><a href="college-signup.html" class="btn">College Sign Up</a></div>
-    </main>
+  <script type="module">
+    import { studentLogin } from './assets/js/auth.js';
+    import { logAction } from './assets/js/logger.js';
 
-    <footer>
-      <p>Career Guidance</p>
-    </footer>
-  </body>
+    const form = document.getElementById('login-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      try {
+        const user = await studentLogin(email, password);
+        await logAction({ action: 'login_success', uid: user.uid, meta: { email } });
+        // On successful login go to career selection
+        location.href = 'career-selection.html';
+      } catch (err) {
+        await logAction({ action: 'login_failed', meta: { email, error: String(err) } });
+        alert('Login failed: ' + (err.message || err));
+      }
+    });
+  </script>
+</body>
 </html>

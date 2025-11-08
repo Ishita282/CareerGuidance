@@ -1,44 +1,95 @@
-  <!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>College Registration</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <title>College Registration</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    <header>
-        <h1>College Registration</h1>
-    </header>
+  <main class="container">
+    <h1>College Registration</h1>
+    <section class="card">
+      <div id="reg-area">
+        <p class="muted">Loading...</p>
+      </div>
+    </section>
+  </main>
 
-    <main>
-        <form id="registrationForm">
-            <input type="text" id="studentName" placeholder="Full Name" required><br><br>
-            <input type="email" id="studentEmail" placeholder="Email" required><br><br>
-            <input type="number" id="cgpa" placeholder="CGPA / Percentage" required><br><br>
-            <button type="submit" class="btn">Register</button>
+  <script type="module">
+    import { getCollegeById } from './assets/js/college.js';
+    import { db } from './assets/js/firebase-config.js';
+    import { addDoc, collection, serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+    import { logAction } from './assets/js/logger.js';
+    import { auth } from './assets/js/firebase-config.js';
+    import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
+
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id');
+    const regArea = document.getElementById('reg-area');
+
+    async function showForm(college) {
+      regArea.innerHTML = `
+        <h2>Register for ${college.name}</h2>
+        <form id="app-form" class="form">
+          <label>Full name <input id="app-name" required /></label>
+          <label>Email <input id="app-email" type="email" required /></label>
+          <label>Phone <input id="app-phone" /></label>
+          <label>CGPA <input id="app-cgpa" type="number" step="0.01" required /></label>
+          <label>SOP (short) <textarea id="app-sop" rows="4"></textarea></label>
+          <button class="btn" type="submit">Submit Application</button>
         </form>
-    </main>
+      `;
+      document.getElementById('app-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const payload = {
+          collegeId: college.id,
+          collegeName: college.name,
+          name: document.getElementById('app-name').value.trim(),
+          email: document.getElementById('app-email').value.trim(),
+          phone: document.getElementById('app-phone').value.trim(),
+          cgpa: Number(document.getElementById('app-cgpa').value),
+          sop: document.getElementById('app-sop').value.trim(),
+          status: 'submitted',
+          createdAt: serverTimestamp()
+        };
+        try {
+          await addDoc(collection(db, 'applications'), payload);
+          await logAction({ action:'application_submitted', meta:{ collegeId: college.id, name: payload.name }});
+          alert('Application submitted successfully.');
+          location.href = 'college-list.html';
+        } catch (err) {
+          await logAction({ action:'application_failed', meta:{ error: String(err) }});
+          alert('Failed to submit application.');
+        }
+      });
+    }
 
-    <script>
-        const form = document.getElementById('registrationForm');
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const collegeId = localStorage.getItem('collegeId');
-            const name = document.getElementById('studentName').value;
-            const email = document.getElementById('studentEmail').value;
-            const cgpa = document.getElementById('cgpa').value;
-
-            db.collection("registrations").add({
-                collegeId: collegeId,
-                name: name,
-                email: email,
-                cgpa: cgpa
-            }).then(() => {
-                console.log("Registration complete for:", name);
-                alert("Registration Successful");
-                window.location.href = "aptitude-test.html";
-            }).catch(err => console.error(err));
+    (async () => {
+      if (!id) {
+        regArea.innerHTML = '<p class="muted">No college selected.</p>';
+        return;
+      }
+      try {
+        const c = await getCollegeById(id);
+        if (!c) {
+          regArea.innerHTML = '<p class="muted">College not found.</p>';
+          return;
+        }
+        // Wait for auth to get user email for pre-fill (optional)
+        onAuthStateChanged(auth, (user) => {
+          showForm(c);
+          if (user) {
+            const emailEl = document.getElementById('app-email');
+            const nameEl = document.getElementById('app-name');
+            if (emailEl) emailEl.value = user.email || '';
+            if (nameEl) nameEl.value = user.displayName || '';
+          }
         });
-    </script>
+      } catch (err) {
+        regArea.innerHTML = '<p class="muted">Failed to load registration form.</p>';
+      }
+    })();
+  </script>
 </body>
 </html>

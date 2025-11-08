@@ -1,33 +1,58 @@
-  <!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Student Details</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8"/>
+  <title>Student Profile</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    <header>
-        <h1>Your Details</h1>
-    </header>
+  <main class="container">
+    <h1>My Profile</h1>
+    <section class="card">
+      <div id="profile-area">
+        <p class="muted">Loading profile...</p>
+      </div>
+      <div class="card-actions">
+        <a class="btn" href="career-selection.html">Back</a>
+        <a class="btn secondary" href="aptitude-test.html">Aptitude Test</a>
+      </div>
+    </section>
+  </main>
 
-    <main>
-        <div id="studentInfo"></div>
-    </main>
+  <script type="module">
+    import { auth, db } from './assets/js/firebase-config.js';
+    import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
+    import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+    import { logAction } from './assets/js/logger.js';
 
-    <script>
-        const studentEmail = firebase.auth().currentUser?.email;
-        const infoDiv = document.getElementById('studentInfo');
+    const area = document.getElementById('profile-area');
 
-        db.collection("registrations").where("email", "==", studentEmail)
-            .get()
-            .then(snapshot => {
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    infoDiv.innerHTML = `<p>Name: ${data.name}</p>
-                                         <p>Email: ${data.email}</p>
-                                         <p>CGPA: ${data.cgpa}</p>`;
-                });
-            });
-    </script>
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        area.innerHTML = '<p class="muted">Please login.</p>';
+        return;
+      }
+      try {
+        const ref = doc(db, 'users', user.uid);
+        const snap = await getDoc(ref);
+        if (!snap.exists()) {
+          area.innerHTML = `<p class="muted">Profile not found. Email: ${user.email}</p>`;
+          return;
+        }
+        const data = snap.data();
+        area.innerHTML = `
+          <p><strong>Name:</strong> ${data.name || ''}</p>
+          <p><strong>Email:</strong> ${data.email || ''}</p>
+          <p><strong>Phone:</strong> ${data.phone || ''}</p>
+          <p><strong>CGPA:</strong> ${data.academic?.cgpa ?? 'N/A'}</p>
+          <p><strong>Entrance Exams:</strong> ${(data.entranceExams || []).join(', ') || 'N/A'}</p>
+        `;
+        await logAction({ action:'view_profile', uid: user.uid });
+      } catch (err) {
+        area.innerHTML = '<p class="muted">Failed to load profile.</p>';
+      }
+    });
+  </script>
 </body>
 </html>

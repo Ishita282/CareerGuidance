@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Location Selection</title><link rel="stylesheet" href="assets/css/styles.css"></head>
+<body>
+<main class="centered">
+<h1>Select Location</h1>
+<div class="card two-buttons">
+<button id="india">INDIA</button>
+<button id="abroad">ABROAD</button>
+</div>
+</main>
+<script>
+document.getElementById('india').addEventListener('click', ()=>{ localStorage.setItem('location','India'); location.href='college-list.html?loc=India'; });
+document.getElementById('abroad').addEventListener('click', ()=>{ localStorage.setItem('location','Abroad'); location.href='college-list.html?loc=Abroad'; });
+</script>
+</body>
+</html>

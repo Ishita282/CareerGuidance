@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>College Details</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <main class="container">
+    <h1>College Details</h1>
+    <section class="card" id="detail-card">
+      <p class="muted">Loading...</p>
+    </section>
+  </main>
+
+  <script type="module">
+    import { getCollegeById } from './assets/js/college.js';
+    import { logAction } from './assets/js/logger.js';
+
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id');
+    const el = document.getElementById('detail-card');
+
+    if (!id) {
+      el.innerHTML = '<p class="muted">No college selected.</p>';
+    } else {
+      (async () => {
+        try {
+          const c = await getCollegeById(id);
+          if (!c) {
+            el.innerHTML = '<p class="muted">College not found.</p>';
+            return;
+          }
+          el.innerHTML = `
+            <h2>${c.name}</h2>
+            <p class="muted">${c.location}</p>
+            <p><strong>Tuition:</strong> ₹${c.fees?.tuition ?? 'N/A'}</p>
+            <p><strong>Housing:</strong> ₹${c.fees?.housing ?? 'N/A'}</p>
+            <p><strong>Min CGPA:</strong> ${c.eligibility?.min_cgpa ?? 'N/A'}</p>
+            <p><strong>Entrances Accepted:</strong> ${(c.eligibility?.entrances || []).join(', ') || 'N/A'}</p>
+            <p><strong>Scholarships:</strong> ${(c.scholarships || []).join(', ') || 'N/A'}</p>
+            <div class="card-actions">
+              <a class="btn" href="college-registration.html?id=${c.id}">Register</a>
+              <a class="btn secondary" href="college-list.html">Back to list</a>
+            </div>
+          `;
+          await logAction({ action: 'view_college_detail', meta: { id }});
+        } catch (err) {
+          el.innerHTML = '<p class="muted">Failed to load college.</p>';
+        }
+      })();
+    }
+  </script>
+</body>
+</html>
