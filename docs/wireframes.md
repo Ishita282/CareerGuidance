@@ -12,4 +12,4 @@ college-detail.html: full details + Register button.
 
 college-registration.html: shows required documents + final submit.
 
-aptitude-test.html: MCQ questions one-page form; Submit → test-complete.html.
+aptitude-test.html: MCQ questions one-page form; Submit → test-completion.html.
