@@ -56,7 +56,7 @@ export function startTest(containerEl, submitBtn) {
       await setDoc(doc(db, 'aptitude_results', id), result);
       await logAction({ action:'aptitude_submitted', meta: { score, total: QUESTIONS.length }});
       // redirect with score
-      location.href = `test-complete.html?resultId=${id}&score=${score}`;
+      location.href = `test-completion.html?resultId=${id}&score=${score}`;
     } catch (err) {
       console.error(err);
       alert('Failed to submit test. Try again.');
