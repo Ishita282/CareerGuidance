@@ -1,19 +1,14 @@
-// aptitude.js
+
 import { db } from './firebase-config.js';
 import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 import { logAction } from './logger.js';
 
-// Simple set of MCQs to follow spec (verbal, quantitative, gk)
 const QUESTIONS = [
   { id:'q1', text:'2 + 3 = ?', choices:['4','5','6','7'], answer:1, section:'quant' },
   { id:'q2', text:'Choose the synonym of "abundant".', choices:['scarce','plentiful','rare','empty'], answer:1, section:'verbal' },
   { id:'q3', text:'Who is known as the Father of Computers?', choices:['Alan Turing','Charles Babbage','Tim Berners-Lee','Ada Lovelace'], answer:1, section:'gk' }
 ];
 
-/**
- * startTest(containerEl, submitBtn)
- * Renders questions into containerEl and wires submitBtn to save result.
- */
 export function startTest(containerEl, submitBtn) {
   containerEl.innerHTML = '';
   const form = document.createElement('form');
